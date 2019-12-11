@@ -23,7 +23,7 @@ public class SysVerify extends BaseEntity {
      * 用户id
      */
     @Excel(name = "用户id")
-    private Long useId;
+    private Long userId;
 
     /**
      * 认证类型0为实名认证1为企业认证2为用电信息认证3为职业认证
@@ -49,12 +49,12 @@ public class SysVerify extends BaseEntity {
         this.verifyType = verifyType;
     }
 
-    public void setUseId(Long useId) {
-        this.useId = useId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Long getUseId() {
-        return useId;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getVerifyType() {
@@ -73,7 +73,7 @@ public class SysVerify extends BaseEntity {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("verifyId", getVerifyId())
-                .append("useId", getUseId())
+                .append("userId", getUserId())
                 .append("verifyType", getVerifyType())
                 .append("status", getStatus())
                 .append("createBy", getCreateBy())

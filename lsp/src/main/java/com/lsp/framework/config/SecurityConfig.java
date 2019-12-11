@@ -89,7 +89,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 // 过滤请求
                 .authorizeRequests()
                 // 对于登录login 验证码captchaImage 允许匿名访问
-                .antMatchers("/login", "/captchaImage").anonymous()
+                .antMatchers("/login", "/appLogin", "/captchaImage").anonymous()
+//                .antMatchers("/system/user").anonymous()
+                .antMatchers("/system/user/regist").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",
@@ -98,8 +100,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/profile/**").anonymous()
+                .antMatchers("/common/upload**").anonymous()
                 .antMatchers("/common/download**").anonymous()
-                .antMatchers("/swagger-ui.html").anonymous()
+//                .antMatchers("/swagger-ui.html").anonymous()
+                .antMatchers("/doc.html").anonymous()
                 .antMatchers("/swagger-resources/**").anonymous()
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/*/api-docs").anonymous()

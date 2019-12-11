@@ -1,7 +1,11 @@
 package com.lsp.project.system.domain;
+import	java.lang.reflect.Array;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lsp.framework.aspectj.lang.annotation.Excel;
@@ -13,20 +17,24 @@ import com.lsp.framework.web.domain.BaseEntity;
  *
  * @author lsp
  */
+@ApiModel("角色实体")
 public class SysRole extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 角色ID */
+    @ApiModelProperty("角色序号")
     @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
     private Long roleId;
 
     /** 角色名称 */
+    @ApiModelProperty("角色名称")
     @Excel(name = "角色名称")
     private String roleName;
 
     /** 角色权限 */
-    @Excel(name = "角色权限")
+    @ApiModelProperty("角色权限key" )
+    @Excel(name = "角色权限key")
     private String roleKey;
 
     /** 角色排序 */

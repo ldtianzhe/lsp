@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      title: '中智电烨管理系统',
+      title: '中智电烨',
       logo: logoImg
     }
   }

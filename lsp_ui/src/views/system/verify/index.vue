@@ -37,16 +37,16 @@
 <!--          v-hasPermi="['system:verify:add']"-->
 <!--        >新增</el-button>-->
 <!--      </el-col>-->
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:verify:edit']"
-        >修改</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['system:verify:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -71,7 +71,7 @@
     <el-table v-loading="loading" :data="verifyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="认证信息id" align="center" prop="verifyId" show-overflow-tooltip/>
-      <el-table-column label="用户id" align="center" prop="useId" />
+      <el-table-column label="用户id" align="center" prop="userId" />
       <el-table-column label="认证类型" align="center" prop="verifyType" :formatter="verifyTypeFormat" />
       <el-table-column label="审核状态" align="center" prop="status" :formatter="statusFormat" />
       <el-table-column label="备注" align="center" prop="remark" />
@@ -84,13 +84,6 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:verify:edit']"
           >查看</el-button>
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-delete"-->
-<!--            @click="handleDelete(scope.row)"-->
-<!--            v-hasPermi="['system:verify:remove']"-->
-<!--          >删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -103,46 +96,12 @@
       @pagination="getList"
     />
 
-<!--    <el-dialog :title="title" :visible.sync="openName" width="500px">-->
-<!--      <el-form ref="form" :model="form" :rules="rules" label-width="80px">-->
-<!--        <el-form-item label="用户姓名:" prop="useId">-->
-<!--          <p v-model="form.usename"></p>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="身份账号:" prop="">-->
-<!--          <p v-model="form.usename"></p>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="认证类型">-->
-<!--          <el-select v-model="form.verifyType" placeholder="请选择认证类型">-->
-<!--            <el-option-->
-<!--              v-for="dict in verifyTypeOptions"-->
-<!--              :key="dict.dictValue"-->
-<!--              :label="dict.dictLabel"-->
-<!--              :value="dict.dictValue"-->
-<!--            ></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="审核状态">-->
-<!--          <el-select v-model="form.status" placeholder="请选择审核状态">-->
-<!--            <el-option-->
-<!--              v-for="dict in statusOptions"-->
-<!--              :key="dict.dictValue"-->
-<!--              :label="dict.dictLabel"-->
-<!--              :value="dict.dictValue"-->
-<!--            ></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
-<!--      </el-form>-->
-<!--      <div slot="footer" class="dialog-footer">-->
-<!--        <el-button type="primary" @click="submitForm">审核</el-button>-->
-<!--        <el-button @click="cancel">取 消</el-button>-->
-<!--      </div>-->
-<!--    </el-dialog>-->
 
     <!-- 添加或修改审核信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户id" prop="useId">
-          <el-input v-model="form.useId" placeholder="请输入用户id" />
+        <el-form-item label="用户id" prop="userId">
+          <el-input v-model="form.userId" placeholder="请输入用户id" />
         </el-form-item>
         <el-form-item label="认证类型">
           <el-select v-model="form.verifyType" placeholder="请选择认证类型">
@@ -203,7 +162,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        useId: undefined,
+        userId: undefined,
         verifyType: undefined,
         status: undefined,
       },
@@ -237,11 +196,11 @@ export default {
         this.loading = false;
       });
     },
-    // 认证类型0为实名认证1为企业认证2为用电信息认证3为职业认证字典翻译
+    // 认证类型0为实名认证1为企业认证2为用电信息认证3为职业认证
     verifyTypeFormat(row, column) {
       return this.selectDictLabel(this.verifyTypeOptions, row.verifyType);
     },
-    // 审核状态0未审核1已审核字典翻译
+    // 审核状态0未审核1已审核
     statusFormat(row, column) {
       return this.selectDictLabel(this.statusOptions, row.status);
     },
@@ -254,7 +213,7 @@ export default {
     reset() {
       this.form = {
         verifyId: undefined,
-        useId: undefined,
+        userId: undefined,
         verifyType: undefined,
         status: undefined,
         createBy: undefined,
@@ -291,9 +250,11 @@ export default {
     handleUpdate(row) {
       this.reset();
       const verifyId = row.verifyId || this.ids
+      const userId = row.userId
       const verifyType = row.verifyType
+      const status = row.status
       if (verifyType == 0){
-
+        this.$router.push({ path: "/verify/name", query: { verifyId: verifyId,userId : userId,status : status } });
       }else if (verifyType == 1){
 
       }else if (verifyType == 2){
@@ -301,11 +262,7 @@ export default {
       }else if (verifyType == 3){
 
       }
-      getVerify(verifyId).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改审核信息";
-      });
+
     },
     /** 提交按钮 */
     submitForm: function() {

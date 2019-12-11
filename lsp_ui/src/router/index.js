@@ -80,6 +80,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/verify',
+    component: Layout,
+    hidden: true,
+    children : [
+      {
+        path: 'name',
+        component: () => import('@/views/system/verify/VerifyName'),
+        name: 'VerifyName',
+        meta: { title: '审核实名认证' }
+      }
+    ]
+  },
+  {
     path: '/dict',
     component: Layout,
     hidden: true,

@@ -5,6 +5,9 @@ import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lsp.framework.web.domain.BaseEntity;
@@ -14,20 +17,24 @@ import com.lsp.framework.web.domain.BaseEntity;
  *
  * @author lsp
  */
+@ApiModel("部门实体")
 public class SysDept extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 部门ID */
+    @ApiModelProperty("部门id")
     private Long deptId;
 
     /** 父部门ID */
+    @ApiModelProperty("父部门id")
     private Long parentId;
 
     /** 祖级列表 */
     private String ancestors;
 
     /** 部门名称 */
+    @ApiModelProperty("部门名称" )
     private String deptName;
 
     /** 显示顺序 */

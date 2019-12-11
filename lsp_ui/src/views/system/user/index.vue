@@ -257,7 +257,6 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-
           <el-col :span="12">
             <el-form-item label="职业" label-width="100px">
               <el-select v-model="form.postIds" multiple placeholder="请选择">
@@ -454,7 +453,6 @@
         this.sexOptions = response.data;
       });
       this.getDicts("sys_cert_status").then(response => {
-        window.console.log(response.data)
         this.certOptions = response.data;
       });
       this.getConfigKey("sys.user.initPassword").then(response => {

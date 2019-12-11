@@ -2,6 +2,9 @@ package com.lsp.project.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import com.lsp.framework.web.domain.AjaxResult;
  *
  * @author lsp
  */
+@Api("通用工具")
 @RestController
 public class CommonController
 {
@@ -66,6 +70,7 @@ public class CommonController
     /**
      * 通用上传请求
      */
+    @ApiOperation("文件上传")
     @PostMapping("/common/upload")
     public AjaxResult uploadFile(MultipartFile file) throws Exception
     {

@@ -1,6 +1,9 @@
 package com.lsp.project.system.controller;
+import	java.awt.font.NumericShaper.Range;
 
 import java.util.List;
+
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +34,7 @@ import com.lsp.project.system.service.ISysUserService;
  *
  * @author lsp
  */
+@Api("用户信息管理")
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController
@@ -69,8 +73,10 @@ public class SysUserController extends BaseController
     /**
      * 根据用户编号获取详细信息
      */
-    //@PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping(value = { "/", "/{userId}" })
+    @ApiOperation("根据用户id获取详细信息")
+    @ApiImplicitParam(name = "userId",value = "用户id",required = true, dataType = "int", paramType = "path")
+    @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @GetMapping("/{userId}")
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
     {
         AjaxResult ajax = AjaxResult.success();
@@ -88,7 +94,13 @@ public class SysUserController extends BaseController
     /**
      * 新增用户
      */
-    //@PreAuthorize("@ss.hasPermi('system:user:add')")
+    @ApiOperation("新增用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "SysUser", value = "新增用户信息", dataType = "SysUser"),
+            @ApiImplicitParam(name = "userName", value = "登录名",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "nickName", value = "用户昵称",required = true, dataType = "String")
+    })
+    @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysUser user)
@@ -110,9 +122,30 @@ public class SysUserController extends BaseController
         return toAjax(userService.insertUser(user));
     }
 
+    @ApiOperation("用户注册")
+    @ApiImplicitParam(name = "SysUser", value = "新增用户信息", dataType = "SysUser")
+    @PostMapping("/regist")
+    public AjaxResult register(@Validated @RequestBody SysUser user){
+        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName()))){
+            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
+        }
+        String[] role = {"2"};
+        Long[] Role = new Long[role.length];
+        for (int i = 0; i < role.length; i++ ){
+            Role[i] = Long.parseLong(role[i]);
+        }
+        Long DeptId = new Long(106);
+        user.setRoleIds(Role);
+        user.setDeptId(DeptId);
+        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        return toAjax(userService.insertUser(user));
+    }
+
     /**
      * 修改用户
      */
+    @ApiOperation("更新用户信息")
+    @ApiImplicitParam(name = "SysUser", value = "新增用户信息", dataType = "SysUser")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping

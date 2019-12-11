@@ -32,6 +32,17 @@ public class SysUserNameServiceImpl implements ISysUserNameService
     }
 
     /**
+     * 根据用户id查询实名信息
+     *
+     * @param userid 用户id
+     * @return
+     */
+    @Override
+    public SysUserName selectSysUserNameByUserId(Long userid) {
+        return sysUserNameMapper.selectSysUserNameByUserId(userid);
+    }
+
+    /**
      * 查询实名信息列表
      *
      * @param sysUserName 实名信息

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsp.project.system.mapper.MissionMapper">
+    
+    <resultMap type="Mission" id="MissionResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="area"    column="area"    />
+        <result property="address"    column="address"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="sort"    column="sort"    />
+        <result property="title"    column="title"    />
+        <result property="describe"    column="describe"    />
+        <result property="img"    column="img"    />
+        <result property="contact"    column="contact"    />
+        <result property="cPhone"    column="c_phone"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="evaluate"    column="evaluate"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectMissionVo">
+        select id, user_id, area, address, longitude, latitude, sort, title, describe, img, contact, c_phone, order_id, evaluate, state from mission
+    </sql>
+
+    <select id="selectMissionList" parameterType="Mission" resultMap="MissionResult">
+        <include refid="selectMissionVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="area != null  and area != ''"> and area like concat('%', #{area}, '%')</if>
+            <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
+            <if test="longitude != null "> and longitude = #{longitude}</if>
+            <if test="latitude != null "> and latitude = #{latitude}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="describe != null  and describe != ''"> and describe = #{describe}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="contact != null  and contact != ''"> and contact like concat('%', #{contact}, '%')</if>
+            <if test="cPhone != null  and cPhone != ''"> and c_phone = #{cPhone}</if>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="evaluate != null  and evaluate != ''"> and evaluate = #{evaluate}</if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectMissionById" parameterType="Long" resultMap="MissionResult">
+        <include refid="selectMissionVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectMissionByUserId" parameterType="Long" resultMap="MissionResult">
+        <include refid="selectMissionVo"/>
+        where user_id = #{userId}
+    </select>
+    
+    <insert id="insertMission" parameterType="Mission" useGeneratedKeys="true" keyProperty="id">
+        insert into mission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">user_id,</if>
+            <if test="area != null  and area != ''">area,</if>
+            <if test="address != null  and address != ''">address,</if>
+            <if test="longitude != null ">longitude,</if>
+            <if test="latitude != null ">latitude,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="describe != null  and describe != ''">describe,</if>
+            <if test="img != null  and img != ''">img,</if>
+            <if test="contact != null  and contact != ''">contact,</if>
+            <if test="cPhone != null  and cPhone != ''">c_phone,</if>
+            <if test="orderId != null ">order_id,</if>
+            <if test="evaluate != null  and evaluate != ''">evaluate,</if>
+            <if test="state != null  and state != ''">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">#{userId},</if>
+            <if test="area != null  and area != ''">#{area},</if>
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="longitude != null ">#{longitude},</if>
+            <if test="latitude != null ">#{latitude},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="describe != null  and describe != ''">#{describe},</if>
+            <if test="img != null  and img != ''">#{img},</if>
+            <if test="contact != null  and contact != ''">#{contact},</if>
+            <if test="cPhone != null  and cPhone != ''">#{cPhone},</if>
+            <if test="orderId != null ">#{orderId},</if>
+            <if test="evaluate != null  and evaluate != ''">#{evaluate},</if>
+            <if test="state != null  and state != ''">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMission" parameterType="Mission">
+        update mission
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="area != null  and area != ''">area = #{area},</if>
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="longitude != null ">longitude = #{longitude},</if>
+            <if test="latitude != null ">latitude = #{latitude},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="describe != null  and describe != ''">describe = #{describe},</if>
+            <if test="img != null  and img != ''">img = #{img},</if>
+            <if test="contact != null  and contact != ''">contact = #{contact},</if>
+            <if test="cPhone != null  and cPhone != ''">c_phone = #{cPhone},</if>
+            <if test="orderId != null ">order_id = #{orderId},</if>
+            <if test="evaluate != null  and evaluate != ''">evaluate = #{evaluate},</if>
+            <if test="state != null  and state != ''">state = #{state},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMissionById" parameterType="Long">
+        delete from mission where id = #{id}
+    </delete>
+
+    <delete id="deleteMissionByIds" parameterType="String">
+        delete from mission where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

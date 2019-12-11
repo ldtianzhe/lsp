@@ -2,6 +2,11 @@ package com.lsp.project.system.controller;
 
 import java.util.List;
 import java.util.Set;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +27,7 @@ import com.lsp.project.system.service.ISysMenuService;
  *
  * @author lsp
  */
+@Api("登录验证类")
 @RestController
 public class SysLoginController
 {
@@ -42,7 +48,7 @@ public class SysLoginController
      *
      * @param username 用户名
      * @param password 密码
-     * @param captcha 验证码
+     * @param code 验证码
      * @param uuid 唯一标识
      * @return 结果
      */
@@ -52,6 +58,15 @@ public class SysLoginController
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
         String token = loginService.login(username, password, code, uuid);
+        ajax.put(Constants.TOKEN, token);
+        return ajax;
+    }
+
+    @ApiOperation("客户端登录验证")
+    @PostMapping("/appLogin")
+    public AjaxResult appLogin(String username, String password){
+        AjaxResult ajax = AjaxResult.success();
+        String token = loginService.appLogin(username,password);
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }

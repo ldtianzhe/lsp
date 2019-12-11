@@ -100,11 +100,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, phonenumber from sys_user where phonenumber = #{phonenumber}
+		select user_id, phonenumber from (select user_id, phonenumber from sys_user  where phonenumber != '' and phonenumber is not null) as a where phonenumber = #{phonenumber}
 	</select>
 	
 	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, email from sys_user where email = #{email}
+		select user_id, email from (select user_id, email from sys_user  where email != '' and email is not null) as a where email = #{email}
 	</select>
 	
 	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">

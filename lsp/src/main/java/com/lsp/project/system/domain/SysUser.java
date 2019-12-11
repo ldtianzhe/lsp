@@ -6,6 +6,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lsp.framework.aspectj.lang.annotation.Excel;
@@ -18,12 +21,14 @@ import com.lsp.framework.web.domain.BaseEntity;
  *
  * @author lsp
  */
+@ApiModel("用户实体")
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
      */
+    @ApiModelProperty("用户ID")
     @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;
 
@@ -35,12 +40,15 @@ public class SysUser extends BaseEntity {
     /**
      * 用户账号
      */
+    @ApiModelProperty("用户登录名")
     @Excel(name = "登录名称")
     private String userName;
 
     /**
      * 用户昵称
      */
+
+    @ApiModelProperty("用户昵称")
     @Excel(name = "用户名称")
     private String nickName;
 
@@ -53,15 +61,18 @@ public class SysUser extends BaseEntity {
     /**
      * 手机号码
      */
+    @ApiModelProperty("用户手机号" )
     @Excel(name = "手机号码")
     private String phonenumber;
 
     /**
      * 用户性别
      */
+    @ApiModelProperty("用户性别")
     @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
     private String sex;
 
+    @ApiModelProperty("用户年龄" )
     @Excel(name = "用户年龄")
     private int age;
 
@@ -73,6 +84,7 @@ public class SysUser extends BaseEntity {
     /**
      * 密码
      */
+    @ApiModelProperty("用户密码")
     private String password;
 
     /**

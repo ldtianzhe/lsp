@@ -68,6 +68,12 @@ public class SysUserNameController extends BaseController
         return AjaxResult.success(sysUserNameService.selectSysUserNameById(id));
     }
 
+
+    @GetMapping("/getInfoByUserId/{uesrId}")
+    public AjaxResult getInfoByUserId(@PathVariable("uesrId") Long userid){
+        return AjaxResult.success(sysUserNameService.selectSysUserNameByUserId(userid));
+    }
+
     /**
      * 新增实名信息
      */

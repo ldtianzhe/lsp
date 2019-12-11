@@ -17,6 +17,13 @@ export function getName(id) {
   })
 }
 
+export function getInfoByUserId(userId) {
+  return request({
+    url: '/system/name/getInfoByUserId/'+ userId,
+    method: 'get'
+  })
+}
+
 // 新增实名信息
 export function addName(data) {
   return request({
