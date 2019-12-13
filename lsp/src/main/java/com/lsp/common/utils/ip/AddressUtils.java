@@ -1,5 +1,6 @@
 package com.lsp.common.utils.ip;
 
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONObject;
@@ -15,7 +16,12 @@ public class AddressUtils
 {
     private static final Logger log = LoggerFactory.getLogger(AddressUtils.class);
 
-    public static final String IP_URL = "http://ip.taobao.com/service/getIpInfo.php";
+    //淘宝接口
+    //public static final String IP_URL = "http://ip.taobao.com/service/getIpInfo.php";
+    //360搜索
+    public static final String IP_URL = "https://m.so.com/position";
+
+
 
     public static String getRealAddressByIP(String ip)
     {
@@ -33,9 +39,10 @@ public class AddressUtils
         }
         JSONObject obj = JSONObject.parseObject(rspStr);
         JSONObject data = obj.getObject("data", JSONObject.class);
-        String region = data.getString("region");
-        String city = data.getString("city");
-        address = region + " " + city;
+        JSONObject position = data.getObject("position",JSONObject.class);
+        String province = position.getString("province");
+        String city = position.getString("city");
+        address = province + " " + city;
         return address;
     }
 }

@@ -1,19 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="标题" prop="title">
-        <el-input
-          v-model="queryParams.title"
-          placeholder="请输入标题"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="区域" prop="area">
+      <el-form-item label="地区" prop="area">
         <el-input
           v-model="queryParams.area"
-          placeholder="请输入区域"
+          placeholder="请输入地区"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -28,28 +19,20 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="类别" prop="sort">
-        <el-input
-          v-model="queryParams.sort"
-          placeholder="请选择类别"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="分类id" prop="sort">
+        <el-select v-model="queryParams.sort" placeholder="请选择分类id" clearable size="small">
+          <el-option
+            v-for="dict in sortOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="联系人" prop="contact">
+      <el-form-item label="标题" prop="title">
         <el-input
-          v-model="queryParams.contact"
-          placeholder="请输入联系人"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="联系方式" prop="cPhone">
-        <el-input
-          v-model="queryParams.cPhone"
-          placeholder="请输入联系方式"
+          v-model="queryParams.title"
+          placeholder="请输入标题"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -114,24 +97,17 @@
 
     <el-table v-loading="loading" :data="missionList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="任务id" align="center" prop="id" />
-      <el-table-column label="用户id" align="center" prop="userId" />
-      <el-table-column label="区域" align="center" prop="area" />
-      <el-table-column label="详细地址" align="center" prop="address" />
-<!--      <el-table-column label="经度" align="center" prop="longitude" />-->
-<!--      <el-table-column label="纬度" align="center" prop="latitude" />-->
-      <el-table-column label="类别" align="center" prop="sort" />
-      <el-table-column label="标题" align="center" prop="title" />
-      <el-table-column label="描述" align="center" prop="describe" />
-      <el-table-column label="描述照片" align="center" prop="img" />
-      <el-table-column label="联系人" align="center" prop="contact" />
-      <el-table-column label="联系方式" align="center" prop="cPhone" />
-<!--      <el-table-column label="接单人id" align="center" prop="orderId" />-->
-<!--      <el-table-column label="评价" align="center" prop="evaluate" />-->
-      <el-table-column label="状态" align="center" prop="state" />
+      <el-table-column label="id" width="50" align="left" prop="id" show-overflow-tooltip/>
+      <el-table-column label="用户id" align="center" prop="userId" show-overflow-tooltip/>
+      <el-table-column label="地区" align="center" prop="area" show-overflow-tooltip/>
+      <el-table-column label="详细地址" align="center" prop="address" show-overflow-tooltip />
+      <el-table-column label="分类id" align="center" prop="sort" :formatter="sortFormat" show-overflow-tooltip/>
+      <el-table-column label="标题" align="center" prop="title" show-overflow-tooltip/>
+      <el-table-column label="联系人" align="center" prop="contact" show-overflow-tooltip/>
+      <el-table-column label="联系方式" align="center" prop="cPhone" show-overflow-tooltip/>
+      <el-table-column label="状态" align="center" prop="state" :formatter="stateFormat" show-overflow-tooltip/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-
           <el-button
             size="mini"
             type="text"
@@ -158,14 +134,14 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改任务对话框 -->
+    <!-- 添加或修改任务信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="用户id" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户id" />
         </el-form-item>
-        <el-form-item label="区域" prop="area">
-          <el-input v-model="form.area" placeholder="请输入区域" />
+        <el-form-item label="地区" prop="area">
+          <el-input v-model="form.area" placeholder="请输入地区" />
         </el-form-item>
         <el-form-item label="详细地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入详细地址" />
@@ -176,17 +152,24 @@
         <el-form-item label="纬度" prop="latitude">
           <el-input v-model="form.latitude" placeholder="请输入纬度" />
         </el-form-item>
-        <el-form-item label="类别" prop="sort">
-          <el-input v-model="form.sort" placeholder="请输入类别" />
+        <el-form-item label="分类id">
+          <el-select v-model="form.sort" placeholder="请选择分类id">
+            <el-option
+              v-for="dict in sortOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入标题" />
         </el-form-item>
-        <el-form-item label="描述" prop="describe">
-          <el-input v-model="form.describe" placeholder="请输入描述" />
+        <el-form-item label="描述" prop="description">
+          <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="描述照片" prop="img">
-          <el-input v-model="form.img" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="图片" prop="img">
+          <el-input v-model="form.img" placeholder="请输入图片" />
         </el-form-item>
         <el-form-item label="联系人" prop="contact">
           <el-input v-model="form.contact" placeholder="请输入联系人" />
@@ -201,7 +184,7 @@
           <el-input v-model="form.evaluate" placeholder="请输入评价" />
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="form.state" placeholder="请选择默认0发布1接单2未完成3待评价4完成">
+          <el-select v-model="form.state" placeholder="请选择状态">
             <el-option
               v-for="dict in stateOptions"
               :key="dict.dictValue"
@@ -235,12 +218,16 @@ export default {
       multiple: true,
       // 总条数
       total: 0,
-      // 任务表格数据
+      // 任务信息表格数据
       missionList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
+      // 分类id字典
+      sortOptions: [],
+      // 状态值
+      stateOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -248,49 +235,29 @@ export default {
         userId: undefined,
         area: undefined,
         address: undefined,
-        longitude: undefined,
-        latitude: undefined,
         sort: undefined,
         title: undefined,
-        describe: undefined,
-        img: undefined,
-        contact: undefined,
-        cPhone: undefined,
-        orderId: undefined,
-        evaluate: undefined,
         state: undefined
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        userId: [
-          { required: true, message: "用户id不能为空", trigger: "blur" }
-        ],        address: [
-          { required: true, message: "详细地址不能为空", trigger: "blur" }
-        ],        longitude: [
-          { required: true, message: "经度不能为空", trigger: "blur" }
-        ],        latitude: [
-          { required: true, message: "纬度不能为空", trigger: "blur" }
-        ],        title: [
-          { required: true, message: "标题不能为空", trigger: "blur" }
-        ],        describe: [
-          { required: true, message: "描述不能为空", trigger: "blur" }
-        ],        contact: [
-          { required: true, message: "联系人不能为空", trigger: "blur" }
-        ],        cPhone: [
-          { required: true, message: "联系方式不能为空", trigger: "blur" }
-        ],      }
+      }
     };
   },
   created() {
     this.getList();
+    this.getDicts("sys_miss_sort").then(response => {
+      window.console.log(response)
+      this.sortOptions = response.data;
+    });
     this.getDicts("mission_status").then(response => {
       this.stateOptions = response.data;
     });
   },
   methods: {
-    /** 查询任务列表 */
+    /** 查询任务信息列表 */
     getList() {
       this.loading = true;
       listMission(this.queryParams).then(response => {
@@ -298,6 +265,14 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    // 分类id字典翻译
+    sortFormat(row, column) {
+      return this.selectDictLabel(this.sortOptions, row.sort);
+    },
+    // 状态字典翻译
+    stateFormat(row, column) {
+      return this.selectDictLabel(this.stateOptions, row.state);
     },
     // 取消按钮
     cancel() {
@@ -315,7 +290,7 @@ export default {
         latitude: undefined,
         sort: undefined,
         title: undefined,
-        describe: undefined,
+        description: undefined,
         img: undefined,
         contact: undefined,
         cPhone: undefined,
@@ -345,7 +320,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加任务";
+      this.title = "添加任务信息";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -354,7 +329,7 @@ export default {
       getMission(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改任务";
+        this.title = "修改任务信息";
       });
     },
     /** 提交按钮 */
@@ -388,7 +363,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除任务编号为"' + ids + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除任务信息编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -402,7 +377,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有任务数据项?', "警告", {
+      this.$confirm('是否确认导出所有任务信息数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

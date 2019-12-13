@@ -28,7 +28,7 @@ public class SysVerify extends BaseEntity {
     /**
      * 认证类型0为实名认证1为企业认证2为用电信息认证3为职业认证
      */
-    @Excel(name = "认证类型0为实名认证1为企业认证2为用电信息认证3为职业认证")
+    @Excel(name = "认证类型", readConverterExp = "0=实名认证,1=企业认证,2=用电信息认证，3=职业认证")
     private String verifyType;
 
     /**

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询任务列表
+// 查询任务信息列表
 export function listMission(query) {
   return request({
     url: '/system/mission/list',
@@ -9,15 +9,15 @@ export function listMission(query) {
   })
 }
 
-// 查询任务详细
+// 查询任务信息详细
 export function getMission(id) {
   return request({
     url: '/system/mission/' + id,
-    method: 'get'
+    method: 'get',
   })
 }
 
-// 新增任务
+// 新增任务信息
 export function addMission(data) {
   return request({
     url: '/system/mission',
@@ -26,7 +26,7 @@ export function addMission(data) {
   })
 }
 
-// 修改任务
+// 修改任务信息
 export function updateMission(data) {
   return request({
     url: '/system/mission',
@@ -35,7 +35,7 @@ export function updateMission(data) {
   })
 }
 
-// 删除任务
+// 删除任务信息
 export function delMission(id) {
   return request({
     url: '/system/mission/' + id,
@@ -43,7 +43,7 @@ export function delMission(id) {
   })
 }
 
-// 导出任务
+// 导出任务信息
 export function exportMission(query) {
   return request({
     url: '/system/mission/export',

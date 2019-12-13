@@ -73,8 +73,6 @@ public class SysUserController extends BaseController
     /**
      * 根据用户编号获取详细信息
      */
-    @ApiOperation("根据用户id获取详细信息")
-    @ApiImplicitParam(name = "userId",value = "用户id",required = true, dataType = "int", paramType = "path")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping("/{userId}")
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
@@ -91,15 +89,21 @@ public class SysUserController extends BaseController
         return ajax;
     }
 
+    @ApiOperation("根据用户id获取详细信息")
+    @ApiImplicitParam(name = "userId",value = "用户id",required = true, dataType = "int", paramType = "path")
+    @GetMapping("/getById/{userId}")
+    public AjaxResult getInfoById(@PathVariable(value = "userId", required = true) Long userId){
+        AjaxResult ajax = AjaxResult.success();
+        if (StringUtils.isNotNull(userId))
+        {
+            ajax.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
+        }
+        return ajax;
+    }
+
     /**
      * 新增用户
      */
-    @ApiOperation("新增用户")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "SysUser", value = "新增用户信息", dataType = "SysUser"),
-            @ApiImplicitParam(name = "userName", value = "登录名",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "nickName", value = "用户昵称",required = true, dataType = "String")
-    })
     @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping
@@ -123,7 +127,10 @@ public class SysUserController extends BaseController
     }
 
     @ApiOperation("用户注册")
-    @ApiImplicitParam(name = "SysUser", value = "新增用户信息", dataType = "SysUser")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userName", value = "登录名",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "用户密码",required = true, dataType = "String")
+    })
     @PostMapping("/regist")
     public AjaxResult register(@Validated @RequestBody SysUser user){
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName()))){

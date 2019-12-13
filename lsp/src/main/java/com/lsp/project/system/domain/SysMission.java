@@ -2,93 +2,75 @@ package com.lsp.project.system.domain;
 
 import com.lsp.framework.aspectj.lang.annotation.Excel;
 import com.lsp.framework.web.domain.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 任务对象 mission
+ * 任务信息对象 sys_mission
  *
  * @author lsp
- * @date 2019-12-11
+ * @date 2019-12-13
  */
-@ApiModel("任务实体")
-public class Mission extends BaseEntity
+public class SysMission extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 任务id */
-    @ApiModelProperty("任务id")
     private Long id;
 
     /** 用户id */
-    @ApiModelProperty("用户id")
     @Excel(name = "用户id")
     private Long userId;
 
-    /** 区域 */
-    @ApiModelProperty("区域" )
-    @Excel(name = "区域")
+    /** 地区 */
+    @Excel(name = "地区")
     private String area;
 
     /** 详细地址 */
-    @ApiModelProperty("详细地址" )
     @Excel(name = "详细地址")
     private String address;
 
     /** 经度 */
-    @ApiModelProperty("经度" )
     @Excel(name = "经度")
-    private Double longitude;
+    private String longitude;
 
     /** 纬度 */
-    @ApiModelProperty("纬度")
     @Excel(name = "纬度")
-    private Double latitude;
+    private String latitude;
 
-    /** 类别 */
-    @ApiModelProperty("类别id")
-    @Excel(name = "类别id")
+    /** 分类id */
+    @Excel(name = "分类id")
     private Long sort;
 
     /** 标题 */
-    @ApiModelProperty("标题" )
     @Excel(name = "标题")
     private String title;
 
     /** 描述 */
-    @ApiModelProperty("描述" )
     @Excel(name = "描述")
-    private String describe;
+    private String description;
 
-    /** 描述照片 */
-    @ApiModelProperty("描述照片" )
-    @Excel(name = "描述照片")
+    /** 图片 */
+    @Excel(name = "图片")
     private String img;
 
     /** 联系人 */
-    @ApiModelProperty("联系人")
     @Excel(name = "联系人")
     private String contact;
 
     /** 联系方式 */
-    @ApiModelProperty("联系方式")
     @Excel(name = "联系方式")
     private String cPhone;
 
     /** 接单人id */
-    @ApiModelProperty("接单人id" )
     @Excel(name = "接单人id")
     private Long orderId;
 
     /** 评价 */
-    @ApiModelProperty("评价")
     @Excel(name = "评价")
     private String evaluate;
 
-    /** 状态默认0发布1接单2未完成3待评价4完成 */
-    @ApiModelProperty("状态" )
+    /** 状态 */
     @Excel(name = "状态")
     private String state;
 
@@ -128,21 +110,21 @@ public class Mission extends BaseEntity
     {
         return address;
     }
-    public void setLongitude(Double longitude)
+    public void setLongitude(String longitude)
     {
         this.longitude = longitude;
     }
 
-    public Double getLongitude()
+    public String getLongitude()
     {
         return longitude;
     }
-    public void setLatitude(Double latitude)
+    public void setLatitude(String latitude)
     {
         this.latitude = latitude;
     }
 
-    public Double getLatitude()
+    public String getLatitude()
     {
         return latitude;
     }
@@ -164,14 +146,14 @@ public class Mission extends BaseEntity
     {
         return title;
     }
-    public void setDescribe(String describe)
+    public void setDescription(String description)
     {
-        this.describe = describe;
+        this.description = description;
     }
 
-    public String getDescribe()
+    public String getDescription()
     {
-        return describe;
+        return description;
     }
     public void setImg(String img)
     {
@@ -239,7 +221,7 @@ public class Mission extends BaseEntity
             .append("latitude", getLatitude())
             .append("sort", getSort())
             .append("title", getTitle())
-            .append("describe", getDescribe())
+            .append("description", getDescription())
             .append("img", getImg())
             .append("contact", getContact())
             .append("cPhone", getcPhone())

@@ -3,14 +3,14 @@ package com.lsp.project.system.controller;
 import java.util.List;
 import java.util.Set;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.lsp.common.constant.Constants;
 import com.lsp.common.utils.ServletUtils;
 import com.lsp.framework.security.LoginUser;
@@ -29,8 +29,7 @@ import com.lsp.project.system.service.ISysMenuService;
  */
 @Api("登录验证类")
 @RestController
-public class SysLoginController
-{
+public class SysLoginController {
     @Autowired
     private SysLoginService loginService;
 
@@ -48,13 +47,12 @@ public class SysLoginController
      *
      * @param username 用户名
      * @param password 密码
-     * @param code 验证码
-     * @param uuid 唯一标识
+     * @param code     验证码
+     * @param uuid     唯一标识
      * @return 结果
      */
     @PostMapping("/login")
-    public AjaxResult login(String username, String password, String code, String uuid)
-    {
+    public AjaxResult login(String username, String password, String code, String uuid) {
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
         String token = loginService.login(username, password, code, uuid);
@@ -64,9 +62,12 @@ public class SysLoginController
 
     @ApiOperation("客户端登录验证")
     @PostMapping("/appLogin")
-    public AjaxResult appLogin(String username, String password){
+    public AjaxResult appLogin(@RequestBody String param) {
+        JSONObject obj = JSON.parseObject(param);
+        String username = obj.getString("username");
+        String password = obj.getString("password");
         AjaxResult ajax = AjaxResult.success();
-        String token = loginService.appLogin(username,password);
+        String token = loginService.appLogin(username, password);
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
@@ -77,8 +78,7 @@ public class SysLoginController
      * @return 用户信息
      */
     @GetMapping("getInfo")
-    public AjaxResult getInfo()
-    {
+    public AjaxResult getInfo() {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
         // 角色集合
@@ -98,8 +98,7 @@ public class SysLoginController
      * @return 路由信息
      */
     @GetMapping("getRouters")
-    public AjaxResult getRouters()
-    {
+    public AjaxResult getRouters() {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         // 用户信息
         SysUser user = loginUser.getUser();

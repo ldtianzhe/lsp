@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lsp.project.system.mapper.MissionMapper">
+<mapper namespace="com.lsp.project.system.mapper.SysMissionMapper">
     
-    <resultMap type="Mission" id="MissionResult">
+    <resultMap type="SysMission" id="SysMissionResult">
         <result property="id"    column="id"    />
         <result property="userId"    column="user_id"    />
         <result property="area"    column="area"    />
@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="latitude"    column="latitude"    />
         <result property="sort"    column="sort"    />
         <result property="title"    column="title"    />
-        <result property="describe"    column="describe"    />
+        <result property="description"    column="description"    />
         <result property="img"    column="img"    />
         <result property="contact"    column="contact"    />
         <result property="cPhone"    column="c_phone"    />
@@ -22,23 +22,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="state"    column="state"    />
     </resultMap>
 
-    <sql id="selectMissionVo">
-        select id, user_id, area, address, longitude, latitude, sort, title, describe, img, contact, c_phone, order_id, evaluate, state from mission
+    <sql id="selectSysMissionVo">
+        select id, user_id, area, address, longitude, latitude, sort, title, description, img, contact, c_phone, order_id, evaluate, state from sys_mission
     </sql>
 
-    <select id="selectMissionList" parameterType="Mission" resultMap="MissionResult">
-        <include refid="selectMissionVo"/>
+    <select id="selectSysMissionList" parameterType="SysMission" resultMap="SysMissionResult">
+        <include refid="selectSysMissionVo"/>
         <where>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="area != null  and area != ''"> and area like concat('%', #{area}, '%')</if>
             <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
-            <if test="longitude != null "> and longitude = #{longitude}</if>
-            <if test="latitude != null "> and latitude = #{latitude}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
             <if test="sort != null "> and sort = #{sort}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="describe != null  and describe != ''"> and describe = #{describe}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
             <if test="img != null  and img != ''"> and img = #{img}</if>
-            <if test="contact != null  and contact != ''"> and contact like concat('%', #{contact}, '%')</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
             <if test="cPhone != null  and cPhone != ''"> and c_phone = #{cPhone}</if>
             <if test="orderId != null "> and order_id = #{orderId}</if>
             <if test="evaluate != null  and evaluate != ''"> and evaluate = #{evaluate}</if>
@@ -46,27 +46,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectMissionById" parameterType="Long" resultMap="MissionResult">
-        <include refid="selectMissionVo"/>
+    <select id="selectSysMissionById" parameterType="Long" resultMap="SysMissionResult">
+        <include refid="selectSysMissionVo"/>
         where id = #{id}
     </select>
     
-    <select id="selectMissionByUserId" parameterType="Long" resultMap="MissionResult">
-        <include refid="selectMissionVo"/>
+    <select id="selectSysMissionByUserId" parameterType="Long" resultMap="SysMissionResult">
+        <include refid="selectSysMissionVo" />
         where user_id = #{userId}
     </select>
     
-    <insert id="insertMission" parameterType="Mission" useGeneratedKeys="true" keyProperty="id">
-        insert into mission
+    <insert id="insertSysMission" parameterType="SysMission" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_mission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null ">user_id,</if>
             <if test="area != null  and area != ''">area,</if>
             <if test="address != null  and address != ''">address,</if>
-            <if test="longitude != null ">longitude,</if>
-            <if test="latitude != null ">latitude,</if>
+            <if test="longitude != null  and longitude != ''">longitude,</if>
+            <if test="latitude != null  and latitude != ''">latitude,</if>
             <if test="sort != null ">sort,</if>
             <if test="title != null  and title != ''">title,</if>
-            <if test="describe != null  and describe != ''">describe,</if>
+            <if test="description != null  and description != ''">description,</if>
             <if test="img != null  and img != ''">img,</if>
             <if test="contact != null  and contact != ''">contact,</if>
             <if test="cPhone != null  and cPhone != ''">c_phone,</if>
@@ -78,11 +78,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null ">#{userId},</if>
             <if test="area != null  and area != ''">#{area},</if>
             <if test="address != null  and address != ''">#{address},</if>
-            <if test="longitude != null ">#{longitude},</if>
-            <if test="latitude != null ">#{latitude},</if>
+            <if test="longitude != null  and longitude != ''">#{longitude},</if>
+            <if test="latitude != null  and latitude != ''">#{latitude},</if>
             <if test="sort != null ">#{sort},</if>
             <if test="title != null  and title != ''">#{title},</if>
-            <if test="describe != null  and describe != ''">#{describe},</if>
+            <if test="description != null  and description != ''">#{description},</if>
             <if test="img != null  and img != ''">#{img},</if>
             <if test="contact != null  and contact != ''">#{contact},</if>
             <if test="cPhone != null  and cPhone != ''">#{cPhone},</if>
@@ -92,17 +92,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateMission" parameterType="Mission">
-        update mission
+    <update id="updateSysMission" parameterType="SysMission">
+        update sys_mission
         <trim prefix="SET" suffixOverrides=",">
             <if test="userId != null ">user_id = #{userId},</if>
             <if test="area != null  and area != ''">area = #{area},</if>
             <if test="address != null  and address != ''">address = #{address},</if>
-            <if test="longitude != null ">longitude = #{longitude},</if>
-            <if test="latitude != null ">latitude = #{latitude},</if>
+            <if test="longitude != null  and longitude != ''">longitude = #{longitude},</if>
+            <if test="latitude != null  and latitude != ''">latitude = #{latitude},</if>
             <if test="sort != null ">sort = #{sort},</if>
             <if test="title != null  and title != ''">title = #{title},</if>
-            <if test="describe != null  and describe != ''">describe = #{describe},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
             <if test="img != null  and img != ''">img = #{img},</if>
             <if test="contact != null  and contact != ''">contact = #{contact},</if>
             <if test="cPhone != null  and cPhone != ''">c_phone = #{cPhone},</if>
@@ -113,12 +113,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteMissionById" parameterType="Long">
-        delete from mission where id = #{id}
+    <delete id="deleteSysMissionById" parameterType="Long">
+        delete from sys_mission where id = #{id}
     </delete>
 
-    <delete id="deleteMissionByIds" parameterType="String">
-        delete from mission where id in
+    <delete id="deleteSysMissionByIds" parameterType="String">
+        delete from sys_mission where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
